@@ -2,14 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SERLER</title>
+    <title>AD System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-    <link rel="shortcut icon" href="<%= assetUrl('favicon.ico') %>">
     <link rel="stylesheet" href="<%= assetUrl('main.css') %>">
+    <link rel="stylesheet" href="<%= assetUrl(pageName + '.css') %>">
   </head>
-  <body>
-    <div id="app"></div>
+  <body class="page-<%- pageName %>">
     <script src="<%= assetUrl('main.js') %>"></script>
+    <script src="<%= assetUrl(pageName + '.js') %>"></script>
   </body>
 </html>

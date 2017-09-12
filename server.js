@@ -39,8 +39,7 @@ class Server {
     // compresses the content in gzip
     app.use(compression());
     app.use(bodyPaser());
-    app.use('/static', express.static(`${__dirname}/../dist`));
-    app.use(express.static(`${__dirname}/../dist/pages`));
+    app.use('/static', express.static(`${__dirname}/dist`));
     app.use(routes);
 
     this.app = app;
