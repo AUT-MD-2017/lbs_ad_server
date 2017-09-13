@@ -1,0 +1,24 @@
+@require 'nib/reset'
+@require 'core/mixin'
+
+//
+// Reset
+//
+reset-html5()
+global-reset()
+
+
+//
+// Globals
+//
+*
+  &, &:before, &:after
+    box-sizing: border-box
+
+html
+  font-size: 10px
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+
+body
+  font-size: 12px
+  font-family: BlinkMacSystemFont, -apple-system, Segoe UI, Helvetica, Roboto, Arial, sans-serif
