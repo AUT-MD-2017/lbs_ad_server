@@ -31,8 +31,9 @@ router.get('/user/logout', (req, res) => {
 router.get('/locations', (req, res) => {
   res.jsonp({
     items: _.times(10, () => ({
-      name: lorem.sentence(),
-      desc: lorem.sentences(),
+      id: random.uuid(),
+      name: lorem.words(),
+      desc: lorem.sentence(),
     })),
   });
 });
