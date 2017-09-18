@@ -16,9 +16,8 @@ npm install
 yarn
 
 ### 4. Run the server
->
-cd lbs_ad_server<br>
-npm run dev-server
+> cd lbs_ad_server<br>
+> npm run dev-server
 
 Then, you can visit http://127.0.0.1:3000/api/locations to fetch locations data.
 
