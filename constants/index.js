@@ -85,3 +85,9 @@ export const CATEGORY = {
     WALKING: 'Walking',
   },
 };
+
+export const PRICE_LEVEL = {
+  LOW: 'l',
+  NORMAL: 'n',
+  HIGH: 'h',
+};
