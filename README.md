@@ -17,6 +17,7 @@ Use `Git clone` to clone a mirror copy of code to your dist (Run the command on 
 ### 4. Run the server
 > cd lbs_ad_server<br>
 > npm run dev-server
+Note that, if there is error about missing `dist/manifest.json` , you should run `npm run dev` for the first time.
 
 Then, you can visit http://127.0.0.1:3000/api/locations to fetch locations data.
 
