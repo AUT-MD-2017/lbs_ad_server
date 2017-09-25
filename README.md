@@ -9,11 +9,10 @@ Use `Git clone` to clone a mirror copy of code to your dist (Run the command on 
 `git clone https://github.com/[YOUR USERNAME]/lbs_ad_server.git`
 
 ### 3. Install dependencies
->
-cd lbs_ad_server
-npm install
-`- or - (if using yarn)`
-yarn
+> cd lbs_ad_server<br>
+> npm install<br>
+> `- or - (if using yarn)`<br>
+> yarn
 
 ### 4. Run the server
 > cd lbs_ad_server<br>
