@@ -1,4 +1,4 @@
-# Location-based APP
+# Location-based Server
 ## Installation & Setup Environment
 ### 1. Fork the repository to your Github
 Everyone should use his own repository to develop a new feature, and then make a `pull request` (PR) for requesting merging the code into master branch. So, first of all, you should click the `Fork` button which is at the top-left of the Github to make a new copy of the repository to your own.
@@ -6,7 +6,7 @@ Everyone should use his own repository to develop a new feature, and then make a
 
 ### 2. Clone the code into your local environment
 Use `Git clone` to clone a mirror copy of code to your dist (Run the command on your terminal):
-`git clone https://github.com/[YOUR USERNAME]/lbs_ad_app.git`
+`git clone https://github.com/[YOUR USERNAME]/lbs_ad_server.git`
 
 ### 3. Install dependencies
 >
