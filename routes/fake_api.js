@@ -55,9 +55,9 @@ router.get('/locations', (req, res) => {
 
       return {
         id: random.uuid(),
-        name: lorem.words(),
+        name: utils.formatLocationName(lorem.words()),
         category: _.toUpper(_.sample(categories)),
-        price: _.sample(priceLevels),
+        priceLevel: _.sample(priceLevels),
         distance: utils.formatDistance(
           _.random(distanceBase + 1, distanceBase + 200),
         ),
