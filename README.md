@@ -33,5 +33,6 @@ Switch on Travis CI for you local branch: https://travis-ci.org/profile
 2. [Faker.js](https://github.com/marak/Faker.js/)
 ___
 May be used in future:
+
 3. [Sequelize](http://docs.sequelizejs.com/)
 4. [Passport.js](http://passportjs.org/)
