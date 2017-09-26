@@ -7,3 +7,7 @@ export const formatDistance = (distance) => {
   }
   return `${_.round(distance / 1000, 1)}km`;
 };
+
+export const formatLocationName = (name) => {
+  return _.startCase(_.toLower(name));
+};
