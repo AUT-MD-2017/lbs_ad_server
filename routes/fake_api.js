@@ -43,9 +43,9 @@ router.get('/locations', (req, res) => {
   const priceLevels = _.values(PRICE_LEVEL);
 
   const paginator = {
-    total: 25,
-    page: query.page || 1,
-    perPage: query.perPage || 10,
+    total: 50,
+    page: parseInt(query.page, 10) || 1,
+    perPage: parseInt(query.perPage, 10) || 20,
   };
 
   res.jsonp({
