@@ -7,6 +7,7 @@ const _ = require('lodash');
 const kit = require('nokit');
 const http = require('http');
 const chalk = require('chalk');
+const morgan = require('morgan');
 const express = require('express');
 const compression = require('compression');
 const bodyPaser = require('body-parser');
@@ -35,6 +36,10 @@ class Server {
     app.disable('x-powered-by');
     app.set('views', `${__dirname}/views`);
     app.set('view engine', 'ejs');
+
+    if (kit.isDevelopment()) {
+      app.use(morgan('tiny'));
+    }
 
     // compresses the content in gzip
     app.use(compression());
