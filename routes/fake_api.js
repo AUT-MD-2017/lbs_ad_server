@@ -43,6 +43,7 @@ const createLocation = (options) => {
     ...location,
     hoursToday: '11:00 AM - 11:00 PM',
     address: address.streetAddress(),
+    contact: phone.phoneNumberFormat(),
     website: internet.domainName(),
   } : location;
 };
@@ -73,7 +74,6 @@ router.get('/locations', (req, res) => {
   const paginator = {
     total: 50,
     page: parseInt(query.page, 10) || 1,
-    contact: phone.phoneNumberFormat(),
     perPage: parseInt(query.perPage, 10) || 20,
   };
 
