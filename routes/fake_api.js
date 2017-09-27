@@ -6,7 +6,13 @@ const utils = require('../utils');
 const { CATEGORY, PRICE_LEVEL } = require('../constants');
 
 
-const { image, helpers, random, lorem } = faker;
+const ALL_CATEGORIES_VALUES = _.reduce(_.values(CATEGORY), (arr, category) => {
+  return arr.concat(_.values(category));
+}, []);
+
+const {
+  address, internet, image, helpers, random, lorem, phone,
+} = faker;
 
 const createUser = () => ({
   ...helpers.userCard(),
@@ -14,6 +20,32 @@ const createUser = () => ({
     avatar: image.avatar(),
   },
 });
+
+const createLocation = (options) => {
+  const opts = _.assign({
+    extra: false,
+    categories: ALL_CATEGORIES_VALUES,
+    priceLevels: _.values(PRICE_LEVEL),
+    distanceBase: _.random(2000),
+  }, options);
+
+  const location = {
+    id: random.uuid(),
+    name: utils.formatLocationName(lorem.words()),
+    category: _.toUpper(_.sample(opts.categories)),
+    priceLevel: _.sample(opts.priceLevels),
+    distance: utils.formatDistance(
+      _.random(opts.distanceBase + 1, opts.distanceBase + 200),
+    ),
+  };
+
+  return opts.extra ? {
+    ...location,
+    hoursToday: '11:00 AM - 11:00 PM',
+    address: address.streetAddress(),
+    website: internet.domainName(),
+  } : location;
+};
 
 router.get('/current_user', (req, res) => {
   res.jsonp(createUser());
@@ -36,16 +68,13 @@ router.get('/locations', (req, res) => {
 
   const category = CATEGORY[_.toUpper(query.category)];
   const categories = _.isUndefined(category) ?
-    _.reduce(_.values(CATEGORY), (arr, category) => {
-      return arr.concat(_.values(category));
-    }, []) :
-    _.values(category);
-  const priceLevels = _.values(PRICE_LEVEL);
+    ALL_CATEGORIES_VALUES : _.values(category);
 
   const paginator = {
-    total: 25,
-    page: query.page || 1,
-    perPage: query.perPage || 10,
+    total: 50,
+    page: parseInt(query.page, 10) || 1,
+    contact: phone.phoneNumberFormat(),
+    perPage: parseInt(query.perPage, 10) || 20,
   };
 
   res.jsonp({
@@ -53,16 +82,18 @@ router.get('/locations', (req, res) => {
     items: _.times(paginator.perPage, (i) => {
       const distanceBase = (paginator.page - 1 + i) * 200;
 
-      return {
-        id: random.uuid(),
-        name: utils.formatLocationName(lorem.words()),
-        category: _.toUpper(_.sample(categories)),
-        priceLevel: _.sample(priceLevels),
-        distance: utils.formatDistance(
-          _.random(distanceBase + 1, distanceBase + 200),
-        ),
-      };
+      return createLocation({
+        categories,
+        distanceBase,
+      });
     }),
+  });
+});
+
+router.get('/location/:id', (req, res) => {
+  res.jsonp({
+    ...createLocation({ extra: true }),
+    id: req.params.id,
   });
 });
 
