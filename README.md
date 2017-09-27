@@ -28,6 +28,25 @@ More useful scripts can be achieved at package.json.
 ### 6. At least, the code should pass lint scripts & CI before making a PR
 Switch on Travis CI for you local branch: https://travis-ci.org/profile
 
+
+## Syncing your local branch with the master
+### 1. Configuring the upstream
+Following this tutorial: https://help.github.com/articles/configuring-a-remote-for-a-fork/
+
+### 2. Syncing the local branch
+```
+git checkout master
+git fetch --all
+git rebase upstream/master
+git push
+```
+
+Note that, each time when you develop a future, you should use a separated branch.
+```
+git checkout -b [the new branche nanme]
+```
+
+
 ## Tech Stacks
 1. [Express.js](https://expressjs.com/)
 2. [Faker.js](https://github.com/marak/Faker.js/)
