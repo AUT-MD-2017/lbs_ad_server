@@ -21,11 +21,19 @@ Note that, if there is error about missing `dist/manifest.json` , you should run
 
 Then, you can visit http://127.0.0.1:3000/api/locations to fetch locations data.
 
-### 5. Enable auto-compile the assets while development
+### 5. Use local configuration
+Sometimes we use local configurations to make some personal customizing. For example, to use fake api for local development. In this case, you should add your own `local_config.js` file in root directory. The content of local_config follow the same structure of config.js, but it will overwrite the same `key-value` in config file. A example of using mock data may like this:
+```javascript
+module.exports = {
+  useFakeApi: true,
+};
+```
+
+### 6. Enable auto-compile the assets while development
 `npm run dev`
 More useful scripts can be achieved at package.json.
 
-### 6. At least, the code should pass lint scripts & CI before making a PR
+### 7. At least, the code should pass lint scripts & CI before making a PR
 Switch on Travis CI for you local branch: https://travis-ci.org/profile
 
 
@@ -34,7 +42,7 @@ Switch on Travis CI for you local branch: https://travis-ci.org/profile
 Following this tutorial: https://help.github.com/articles/configuring-a-remote-for-a-fork/
 
 ### 2. Syncing the local branch
-```
+```shell
 git checkout master
 git fetch --all
 git rebase upstream/master
@@ -42,7 +50,7 @@ git push
 ```
 
 Note that, each time when you develop a future, you should use a separated branch.
-```
+```shell
 git checkout -b [the new branche nanme]
 ```
 
