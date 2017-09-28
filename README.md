@@ -6,7 +6,9 @@ Everyone should use his own repository to develop a new feature, and then make a
 
 ### 2. Clone the code into your local environment
 Use `Git clone` to clone a mirror copy of code to your dist (Run the command on your terminal):
-`git clone https://github.com/[YOUR USERNAME]/lbs_ad_server.git`
+```shell
+git clone https://github.com/[YOUR USERNAME]/lbs_ad_server.git
+```
 
 ### 3. Install dependencies
 > cd lbs_ad_server<br>
