@@ -33,6 +33,7 @@ const createLocation = (options) => {
     id: random.uuid(),
     name: utils.formatLocationName(lorem.words()),
     category: _.toUpper(_.sample(opts.categories)),
+    discount: opts.discount,
     priceLevel: _.sample(opts.priceLevels),
     distance: utils.formatDistance(
       _.random(opts.distanceBase + 1, opts.distanceBase + 200),
@@ -83,6 +84,7 @@ router.get('/locations', (req, res) => {
       const distanceBase = (paginator.page - 1 + i) * 200;
 
       return createLocation({
+        discount: i === 0 ? 30 : undefined,
         categories,
         distanceBase,
       });
