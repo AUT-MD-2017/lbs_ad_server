@@ -33,6 +33,7 @@ const createLocation = (options) => {
     id: random.uuid(),
     name: utils.formatLocationName(lorem.words()),
     category: _.toUpper(_.sample(opts.categories)),
+    discount: opts.discount,
     priceLevel: _.sample(opts.priceLevels),
     distance: utils.formatDistance(
       _.random(opts.distanceBase + 1, opts.distanceBase + 200),
@@ -43,6 +44,7 @@ const createLocation = (options) => {
     ...location,
     hoursToday: '11:00 AM - 11:00 PM',
     address: address.streetAddress(),
+    contact: phone.phoneNumberFormat(),
     website: internet.domainName(),
   } : location;
 };
@@ -73,7 +75,6 @@ router.get('/locations', (req, res) => {
   const paginator = {
     total: 50,
     page: parseInt(query.page, 10) || 1,
-    contact: phone.phoneNumberFormat(),
     perPage: parseInt(query.perPage, 10) || 20,
   };
 
@@ -83,6 +84,7 @@ router.get('/locations', (req, res) => {
       const distanceBase = (paginator.page - 1 + i) * 200;
 
       return createLocation({
+        discount: i === 0 ? 30 : undefined,
         categories,
         distanceBase,
       });
