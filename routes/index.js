@@ -3,7 +3,6 @@ const router = require('express').Router();
 const cfg = require('../config');
 const manifest = require('../dist/manifest.json');
 
-
 const assetUrl = (name) => {
   return `/static/${manifest[name]}`;
 };
@@ -11,6 +10,7 @@ const assetUrl = (name) => {
 router.use('/api', cfg.useFakeApi ? require('./fake_api') : require('./api'));
 
 router.use('*', (req, res) => {
+  console.log(cfg);
   res.render('index', {
     assetUrl,
     pageName: 'index',
