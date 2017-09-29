@@ -11,7 +11,7 @@ const ALL_CATEGORIES_VALUES = _.reduce(_.values(CATEGORY), (arr, category) => {
 }, []);
 
 const {
-  address, internet, image, helpers, random, lorem, phone,
+  address, image, helpers, random, lorem, phone,
 } = faker;
 
 const createUser = () => ({
@@ -45,7 +45,11 @@ const createLocation = (options) => {
     hoursToday: '11:00 AM - 11:00 PM',
     address: address.streetAddress(),
     contact: phone.phoneNumberFormat(),
-    website: internet.domainName(),
+    website: 'www.nandos.co.nz',
+    coords: {
+      latitude: -36.852694,
+      longitude: 174.764033,
+    },
   } : location;
 };
 
