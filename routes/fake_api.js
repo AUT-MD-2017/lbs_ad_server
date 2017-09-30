@@ -35,6 +35,7 @@ const createLocation = (options) => {
     category: _.toUpper(_.sample(opts.categories)),
     discount: opts.discount,
     priceLevel: _.sample(opts.priceLevels),
+    isCollected: random.boolean(),
     distance: utils.formatDistance(
       _.random(opts.distanceBase + 1, opts.distanceBase + 200),
     ),
@@ -60,12 +61,6 @@ router.get('/current_user', (req, res) => {
 router.get('/user/login', (req, res) => {
   res.jsonp({
     token: random.uuid(),
-  });
-});
-
-router.get('/user/logout', (req, res) => {
-  res.jsonp({
-    ok: true,
   });
 });
 
@@ -100,6 +95,18 @@ router.get('/location/:id', (req, res) => {
   res.jsonp({
     ...createLocation({ extra: true }),
     id: req.params.id,
+  });
+});
+
+router.post('/location/:id/bookmark', (req, res) => {
+  res.jsonp({
+    ok: true,
+  });
+});
+
+router.delete('/location/:id/bookmark', (req, res) => {
+  res.jsonp({
+    ok: true,
   });
 });
 
