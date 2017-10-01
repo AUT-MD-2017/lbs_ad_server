@@ -27,6 +27,7 @@ const createLocation = (options) => {
     categories: ALL_CATEGORIES_VALUES,
     priceLevels: _.values(PRICE_LEVEL),
     distanceBase: _.random(2000),
+    data: {},
   }, options);
 
   const location = {
@@ -35,7 +36,7 @@ const createLocation = (options) => {
     category: _.toUpper(_.sample(opts.categories)),
     discount: opts.discount,
     priceLevel: _.sample(opts.priceLevels),
-    isCollected: random.boolean(),
+    isCollected: false,
     distance: utils.formatDistance(
       _.random(opts.distanceBase + 1, opts.distanceBase + 200),
     ),
@@ -51,7 +52,11 @@ const createLocation = (options) => {
       latitude: -36.852694,
       longitude: 174.764033,
     },
-  } : location;
+    ...opts.data,
+  } : {
+    ...location,
+    ...opts.data,
+  };
 };
 
 router.get('/current_user', (req, res) => {
@@ -61,6 +66,23 @@ router.get('/current_user', (req, res) => {
 router.get('/user/login', (req, res) => {
   res.jsonp({
     token: random.uuid(),
+  });
+});
+
+router.get('/user/:id/bookmarks', (req, res) => {
+  res.jsonp({
+    data: [
+      createLocation({ extra: true }),
+      createLocation({
+        extra: true,
+        data: {
+          coords: {
+            latitude: -36.850187,
+            longitude: 174.765304,
+          },
+        },
+      }),
+    ],
   });
 });
 
