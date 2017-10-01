@@ -15,6 +15,7 @@ const {
 } = faker;
 
 const createUser = () => ({
+  id: random.uuid(),
   ...helpers.userCard(),
   ...{
     avatar: image.avatar(),
