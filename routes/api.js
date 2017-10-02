@@ -89,20 +89,7 @@ let SignInHandler = function(req, res) {
   }
 };
 
-let SignInfoHandler = function(req, res) {
-  req.cur_user().then(function(user) {
-      res.jsonp(
-          status_code.SUCCESS,
-          status_code.SUCCESS_MSG,
-          {
-              'user_info': user
-          }
-      );
-  }, function() {
-      res.sendStatus(401);
-  });
-}; 
-
+// Test the create User function 
 let UserAddHandler = function(req, res) {
     Promise.all([
 		User.create({email:'wentianl20@126.com', username:'wentianl20_2', password:'itbilu.com'}),
@@ -117,8 +104,7 @@ let UserAddHandler = function(req, res) {
     });
 };
 
-// Test create User
-router.get('/create_user',UserAddHandler);  
+router.get('/create_user',SignInHandler);  
 router.post('/create_user', SignUpHandler);
 
 // TODO
