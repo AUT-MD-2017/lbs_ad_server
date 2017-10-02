@@ -7,10 +7,16 @@ const assetUrl = (name) => {
   return `/static/${manifest[name]}`;
 };
 
+const User = require('../model/user');
+const User_location = require('../model/user_location');
+const Image = require('../model/Image');
+
+User.hasOne(User_location, {foreignKey: 'user_id'});
+User.hasOne(Image,{foreignKey: 'owner_id'});
+
 router.use('/api', cfg.useFakeApi ? require('./fake_api') : require('./api'));
 
 router.use('*', (req, res) => {
-  console.log(cfg);
   res.render('index', {
     assetUrl,
     pageName: 'index',
