@@ -8,10 +8,10 @@ const assetUrl = (name) => {
 };
 
 const User = require('../model/user');
-const User_Location = require('../model/user_location');
+const userLocation = require('../model/user_location');
 const Image = require('../model/Image');
 
-User.hasOne(User_Location, { foreignKey: 'user_id' });
+User.hasOne(userLocation, { foreignKey: 'user_id' });
 User.hasOne(Image, { foreignKey: 'owner_id' });
 
 router.use('/api', cfg.useFakeApi ? require('./fake_api') : require('./api'));

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const crypto = require('crypto');
-const status_Code = require('../helper/status_code');
+const statusCode = require('../helper/status_code');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const userLocation = require('../model/user_location');
@@ -8,7 +8,7 @@ const Image = require('../model/Image');
 
 const secret = 'secretKey';
 
-const SignUpHandler = function (req, res) {
+const SignUpHandler = function signUp(req, res) {
   const email = req.body.email || undefined;
   const username = req.body.username || '';
   const password = req.body.password || undefined;
@@ -17,100 +17,86 @@ const SignUpHandler = function (req, res) {
     // check whether the email address is used
     User.findOne({
       where: {
-        email: email
-      }
-    }).then(function(user) {
+        email,
+      },
+    }).then((user) => {
       if (user) {
         res.end(
-            status_Code.ERROR_USER_SIGNUP_ACCOUNT
+          statusCode.ERROR_USER_SIGNUP_ACCOUNT,
         );
       } else {
         const md5 = crypto.createHash('md5');
         md5.update(password);
 
-        const passwd_code = md5.digest('hex').substr(0, 16);
+        const passwdCode = md5.digest('hex').substr(0, 16);
 
         User.create({
-            email: email,
-            username: username,
-            password: passwd_code
-        }).then(function(user) {
-            res.jsonp(
-                {
-                    stauts_code: status_Code.SUCCESS,
-                    status_message: status_Code.SUCCESS_MSG,  
-                    'user_info': user.get('to_dict')
-                }
-            );
+          email,
+          username,
+          password: passwdCode,
+        }).then((user) => {
+          res.jsonp(
+            {
+              stauts_code: statusCode.SUCCESS,
+              status_message: statusCode.SUCCESS_MSG,
+              user_info: user.get('to_dict'),
+            },
+          );
         });
       }
     });
-    } else {
-      res.end(
-          status_Code.ERROR_PARAM
-      );
+  } else {
+    res.end(
+      statusCode.ERROR_PARAM,
+    );
   }
 };
 
-const SignInHandler = function(req, res) {
+const SignInHandler = function signIn(req, res) {
   const email = req.body.email || undefined;
   const password = req.body.password || undefined;
 
   if (email && password) {
-      const md5 = crypto.createHash('md5');
-      md5.update(password);
-      const passwd_code = md5.digest('hex').substr(0, 16);
+    const md5 = crypto.createHash('md5');
+    md5.update(password);
+    const passwdCode = md5.digest('hex').substr(0, 16);
 
-      User.findOne({
-          where: {
-              email: email,
-              password: passwd_code
-          }
-      }).then(function(user) {
-          if (user) {
-              const token = jwt.sign({id: user.get('id')},secret);
+    User.findOne({
+      where: {
+        email,
+        password: passwdCode,
+      },
+    }).then((user) => {
+      if (user) {
+        const token = jwt.sign({ id: user.get('id') }, secret);
 
-              res.jsonp(
-                  
-                  {
-                    'token': token
-                  }
-              );
-          } else {
-              res.end(
-                  status_Code.ERROR_USER_SIGNIN_ACCOUNT
-              );
-          }
-      })
+        res.jsonp(
+
+          {
+            token,
+          },
+        );
+      } else {
+        res.end(
+          statusCode.ERROR_USER_SIGNIN_ACCOUNT,
+        );
+      }
+    });
   } else {
-      res.end(
-          status_Code.ERROR_PARAM
-      );
+    res.end(
+      statusCode.ERROR_PARAM,
+    );
   }
 };
 
-// Test the create User function 
-const UserAddHandler = function(req, res) {
-    Promise.all([
-		User.create({email:'wentianl20@126.com', username:'wentianl20_2', password:'itbilu.com'}),
-		User.create({email:'wentianl20@163.com', username:'wentianl20_3', password:'itbilu.com'})
-	]).then(function(results){
-		console.log(results[0]);
-		res.set('Content-Type', 'text/html; charset=utf-8');
-		res.end('create successfully :'+JSON.stringify({user_1:results[0].dataValues, user_2:results[1].dataValues}));
-	}).catch(error => {
-        console.log(error);
-        res.end(error.toString());
-    });
-};
 
-router.get('/create_user',SignInHandler);  
+router.get('/create_user', SignInHandler);
 router.post('/create_user', SignUpHandler);
 
 // TODO
 router.get('/current_user', (req, res) => {
   const token = req.query.token || undefined;
-  jwt.verify(token, secret, function(err, decoded) {
+  jwt.verify(token, secret, (err, decoded) => {
     if (err) {
       /*
         err = {
@@ -120,43 +106,42 @@ router.get('/current_user', (req, res) => {
         }
       */
       res.jsonp({
-        error: 'TokenError'
+        error: 'TokenError',
+      });
+    } else {
+      const id = decoded.id;
+      User.findOne({
+        include: [{
+          model: userLocation,
+          where: {
+            user_id: id,
+          },
+        }, {
+          model: Image,
+          where: {
+            owner_type: '0',
+          },
+        }],
+      }).then((user) => {
+        if (user) {
+          res.jsonp(
+            {
+              // user
+              //   id: user.get("id"),
+              //   email: user.get("email"),
+              //   username: user.get("username"),
+              ...user.get('to_dict'),
+              ...user.get('user_location').get('to_dict'),
+              ...user.get('image').get('to_dict'),
+            },
+          );
+        } else {
+          res.end(
+            statusCode.ERROR_USER_DISAPPEAR,
+          );
+        }
       });
     }
-    else {
-        const id = decoded.id;
-        User.findOne({
-            include: [{
-                model: userLocation,
-                where: {
-                    user_id: id
-                },
-            },{
-                model: Image,
-                where: {
-                    owner_type: "0"
-                },
-            }]
-        }).then(function(user) {
-            if (user) {
-                res.jsonp(
-                    {
-                        // user
-                    //   id: user.get("id"),
-                    //   email: user.get("email"),
-                    //   username: user.get("username"),
-                      ...user.get('to_dict'),
-                      ...user.get("user_location").get('to_dict'),
-                      ...user.get("image").get('to_dict')
-                    }
-                );
-            } else {
-                res.end(
-                    status_Code.ERROR_USER_DISAPPEAR
-                );
-            };
-        });
-    };
   });
 });
 

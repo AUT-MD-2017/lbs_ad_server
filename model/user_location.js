@@ -44,7 +44,7 @@ const userLocation = sequelize.define('user_location', {
   timestamps: false,
   freezeTableName: true,
   getterMethods: {
-    to_dict: function () {
+    to_dict() {
       return {
         lat: this.lat,
         lng: this.lng,

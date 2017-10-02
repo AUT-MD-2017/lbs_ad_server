@@ -45,7 +45,7 @@ const Image = sequelize.define('image', {
   timestamps: false,
   freezeTableName: true,
   getterMethods: {
-    to_dict: function () {
+    to_dict() {
       return {
         urls: this.urls,
       };
