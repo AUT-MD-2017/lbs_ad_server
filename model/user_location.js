@@ -6,51 +6,51 @@ const sequelize = new Sequelize(
   config.username,
   config.password,
   {
-    'dialect': config.driver,
-    'host': config.db_host,
-    'port': config.db_port,
-    'pool':
+    dialect: config.driver,
+    host: config.db_host,
+    port: config.db_port,
+    pool:
     {
-        max: 5,
-        min: 0,
-        idle: 30000
-    }
-  }
+      max: 5,
+      min: 0,
+      idle: 30000,
+    },
+  },
 );
 
-const User_location = sequelize.define('user_location',{
+const userLocation = sequelize.define('user_location', {
   user_id: {
     type: Sequelize.BIGINT,
     allowNull: false,
     primaryKey: true,
-    unique: true
+    unique: true,
     // references: {
     //     model: 'User',
     //     key: 'id'
     // }
   },
   lat: {
-    type: Sequelize.DECIMAL(10,8),
-    allowNull: false
+    type: Sequelize.DECIMAL(10, 8),
+    allowNull: false,
   },
   lng: {
-    type: Sequelize.DECIMAL(10,8),
-    allowNull: false
+    type: Sequelize.DECIMAL(10, 8),
+    allowNull: false,
   },
   updated_at: {
-    type: Sequelize.NOW
-  }
+    type: Sequelize.NOW,
+  },
 }, {
   timestamps: false,
   freezeTableName: true,
   getterMethods: {
-    to_dict: function() {
+    to_dict: function () {
       return {
         lat: this.lat,
-        lng: this.lng
-      }
-    }
-  }
+        lng: this.lng,
+      };
+    },
+  },
 });
 
-module.exports = User_location;
+module.exports = userLocation;

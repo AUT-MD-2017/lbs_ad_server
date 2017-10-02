@@ -1,65 +1,65 @@
 const router = require('express').Router();
 const crypto = require('crypto');
-const status_code = require('../helper/status_code');
+const status_Code = require('../helper/status_code');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
-const User_location = require('../model/user_location');
+const userLocation = require('../model/user_location');
 const Image = require('../model/Image');
 
 const secret = 'secretKey';
 
-let SignUpHandler = function(req, res) {
-  let email = req.body.email || undefined;
-  let username = req.body.username || '';
-  let password = req.body.password || undefined;
+const SignUpHandler = function (req, res) {
+  const email = req.body.email || undefined;
+  const username = req.body.username || '';
+  const password = req.body.password || undefined;
 
   if (email && password) {
-      // check whether the email address is used
-      User.findOne({
-          where: {
-              email: email
-          }
-      }).then(function(user) {
-          if (user) {
-              res.end(
-                  status_code.ERROR_USER_SIGNUP_ACCOUNT
-              );
-          } else {
-              let md5 = crypto.createHash('md5');
-              md5.update(password);
+    // check whether the email address is used
+    User.findOne({
+      where: {
+        email: email
+      }
+    }).then(function(user) {
+      if (user) {
+        res.end(
+            status_Code.ERROR_USER_SIGNUP_ACCOUNT
+        );
+      } else {
+        const md5 = crypto.createHash('md5');
+        md5.update(password);
 
-              let passwd_code = md5.digest('hex').substr(0, 16);
+        const passwd_code = md5.digest('hex').substr(0, 16);
 
-              User.create({
-                  email: email,
-                  username: username,
-                  password: passwd_code
-              }).then(function(user) {
-                  res.jsonp(
-                      {
-                        stauts_code: status_code.SUCCESS,
-                        status_message: status_code.SUCCESS_MSG,  
-                        'user_info': user.get('to_dict')
-                      }
-                  );
-              });
-          }
-      });
-  } else {
+        User.create({
+            email: email,
+            username: username,
+            password: passwd_code
+        }).then(function(user) {
+            res.jsonp(
+                {
+                    stauts_code: status_Code.SUCCESS,
+                    status_message: status_Code.SUCCESS_MSG,  
+                    'user_info': user.get('to_dict')
+                }
+            );
+        });
+      }
+    });
+    } else {
       res.end(
-          status_code.ERROR_PARAM
+          status_Code.ERROR_PARAM
       );
   }
 };
 
-let SignInHandler = function(req, res) {
-  let email = req.body.email || undefined;
-  let password = req.body.password || undefined;
+const SignInHandler = function(req, res) {
+  const email = req.body.email || undefined;
+  const password = req.body.password || undefined;
 
   if (email && password) {
-      let md5 = crypto.createHash('md5');
+      const md5 = crypto.createHash('md5');
       md5.update(password);
-      let passwd_code = md5.digest('hex').substr(0, 16);
+      const passwd_code = md5.digest('hex').substr(0, 16);
 
       User.findOne({
           where: {
@@ -68,7 +68,7 @@ let SignInHandler = function(req, res) {
           }
       }).then(function(user) {
           if (user) {
-              let token = jwt.sign({id: user.get('id')},secret);
+              const token = jwt.sign({id: user.get('id')},secret);
 
               res.jsonp(
                   
@@ -78,19 +78,19 @@ let SignInHandler = function(req, res) {
               );
           } else {
               res.end(
-                  status_code.ERROR_USER_SIGNIN_ACCOUNT
+                  status_Code.ERROR_USER_SIGNIN_ACCOUNT
               );
           }
       })
   } else {
       res.end(
-          status_code.ERROR_PARAM
+          status_Code.ERROR_PARAM
       );
   }
 };
 
 // Test the create User function 
-let UserAddHandler = function(req, res) {
+const UserAddHandler = function(req, res) {
     Promise.all([
 		User.create({email:'wentianl20@126.com', username:'wentianl20_2', password:'itbilu.com'}),
 		User.create({email:'wentianl20@163.com', username:'wentianl20_3', password:'itbilu.com'})
@@ -109,7 +109,7 @@ router.post('/create_user', SignUpHandler);
 
 // TODO
 router.get('/current_user', (req, res) => {
-  let token = req.query.token || undefined;
+  const token = req.query.token || undefined;
   jwt.verify(token, secret, function(err, decoded) {
     if (err) {
       /*
@@ -124,18 +124,18 @@ router.get('/current_user', (req, res) => {
       });
     }
     else {
-        let id = decoded.id;
+        const id = decoded.id;
         User.findOne({
             include: [{
-                model: User_location,
+                model: userLocation,
                 where: {
                     user_id: id
-                }
+                },
             },{
                 model: Image,
                 where: {
                     owner_type: "0"
-                }
+                },
             }]
         }).then(function(user) {
             if (user) {
@@ -152,11 +152,11 @@ router.get('/current_user', (req, res) => {
                 );
             } else {
                 res.end(
-                    status_code.ERROR_USER_DISAPPEAR
+                    status_Code.ERROR_USER_DISAPPEAR
                 );
-            }
-        })
-    }
+            };
+        });
+    };
   });
 });
 
