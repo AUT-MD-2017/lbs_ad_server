@@ -86,6 +86,18 @@ router.get('/user/:id/bookmarks', (req, res) => {
   });
 });
 
+router.get('/user/:id/settings', (req, res) => {
+  res.jsonp({
+    notification: _.mapValues(CATEGORY, () => random.boolean()),
+  });
+});
+
+router.post('/user/:id/settings', (req, res) => {
+  res.jsonp({
+    ok: true,
+  });
+});
+
 router.get('/locations', (req, res) => {
   const { query } = req;
 
