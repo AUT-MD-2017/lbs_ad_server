@@ -24,10 +24,6 @@ const userLocation = sequelize.define('user_location', {
     allowNull: false,
     primaryKey: true,
     unique: true,
-    // references: {
-    //     model: 'User',
-    //     key: 'id'
-    // }
   },
   lat: {
     type: Sequelize.DECIMAL(10, 8),

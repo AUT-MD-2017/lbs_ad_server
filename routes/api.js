@@ -4,7 +4,7 @@ const statusCode = require('../helper/status_code');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const userLocation = require('../model/user_location');
-const Image = require('../model/Image');
+const Image = require('../model/image');
 
 const secret = 'secretKey';
 
@@ -93,18 +93,10 @@ const SignInHandler = function signIn(req, res) {
 router.get('/create_user', SignInHandler);
 router.post('/create_user', SignUpHandler);
 
-// TODO
 router.get('/current_user', (req, res) => {
   const token = req.query.token || undefined;
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {
-      /*
-        err = {
-          name: 'TokenExpiredError',
-          message: 'jwt expired',
-          expiredAt: 1408621000
-        }
-      */
       res.jsonp({
         error: 'TokenError',
       });
@@ -126,10 +118,6 @@ router.get('/current_user', (req, res) => {
         if (user) {
           res.jsonp(
             {
-              // user
-              //   id: user.get("id"),
-              //   email: user.get("email"),
-              //   username: user.get("username"),
               ...user.get('to_dict'),
               ...user.get('user_location').get('to_dict'),
               ...user.get('image').get('to_dict'),
@@ -145,9 +133,7 @@ router.get('/current_user', (req, res) => {
   });
 });
 
-// TODO
 router.get('/user/login', SignInHandler);
-
 router.post('/user/login', SignInHandler);
 
 // TODO
@@ -158,6 +144,41 @@ router.get('/user/logout', (req, res) => {
 // TODO
 router.get('/search', (req, res) => {
   res.jsonp({});
+});
+
+// TODO
+router.get('/user/:id/bookmarks', (req, res) => {
+  res.jsonp({
+
+  });
+});
+
+// TODO
+router.get('/locations', (req, res) => {
+  res.jsonp({
+    
+  });
+});
+
+// TODO
+router.get('/location/:id', (req, res) => {
+  res.jsonp({
+    
+  });
+});
+
+// TODO
+router.post('/location/:id/bookmark', (req, res) => {
+  res.jsonp({
+  
+  });
+});
+
+// TODO
+router.delete('/location/:id/bookmark', (req, res) => {
+  res.jsonp({
+    
+  });
 });
 
 module.exports = router;
