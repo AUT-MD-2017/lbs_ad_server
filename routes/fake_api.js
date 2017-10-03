@@ -11,10 +11,12 @@ const ALL_CATEGORIES_VALUES = _.reduce(_.values(CATEGORY), (arr, category) => {
 }, []);
 
 const {
-  address, image, helpers, random, lorem, phone,
+  address, image, helpers, random, lorem, phone, internet,
 } = faker;
 
 const createUser = () => ({
+  id: random.uuid(),
+  password: internet.password(),
   ...helpers.userCard(),
   ...{
     avatar: image.avatar(),
@@ -83,6 +85,18 @@ router.get('/user/:id/bookmarks', (req, res) => {
         },
       }),
     ],
+  });
+});
+
+router.get('/user/:id/settings', (req, res) => {
+  res.jsonp({
+    notification: _.mapValues(CATEGORY, () => random.boolean()),
+  });
+});
+
+router.post('/user/:id/settings', (req, res) => {
+  res.jsonp({
+    ok: true,
   });
 });
 
