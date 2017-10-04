@@ -12,6 +12,9 @@ const SignUpHandler = function signUp(req, res) {
   const email = req.body.email || undefined;
   const username = req.body.username || '';
   const password = req.body.password || undefined;
+  const lat = req.body.lat || undefined;
+  const lng = req.body.lat || undefined;
+  const urls = req.body.urls || undefined;
 
   if (email && password) {
     // check whether the email address is used
@@ -27,21 +30,40 @@ const SignUpHandler = function signUp(req, res) {
       } else {
         const md5 = crypto.createHash('md5');
         md5.update(password);
-
-        const passwdCode = md5.digest('hex').substr(0, 16);
+        const passwdCode = md5.digest('hex').substr(0, 16)
 
         User.create({
           email,
           username,
           password: passwdCode,
         }).then((user) => {
+          const ID = user.get('id');
+
+          Image.create({
+            owner_id: ID,
+            owner_type: 0,
+            urls,
+          }).catch(error => {
+            res.end("create Image error: " + error.toString());
+          });
+
+          userLocation.create({
+            user_id: ID,
+            lat,
+            lng,
+          }).catch(error => {
+            res.end("create userLocation error: " + error.toString());
+          });;
+
           res.jsonp(
             {
               stauts_code: statusCode.SUCCESS,
               status_message: statusCode.SUCCESS_MSG,
-              user_info: user.get('to_dict'),
             },
           );
+
+        }).catch(error => {
+          res.end("create tables error: " + error.toString());
         });
       }
     });
@@ -53,14 +75,14 @@ const SignUpHandler = function signUp(req, res) {
 };
 
 const SignInHandler = function signIn(req, res) {
-  const email = req.body.email || undefined;
-  const password = req.body.password || undefined;
+  const email = req.param('email') || undefined;
+  const password = req.param('password') || undefined;
 
   if (email && password) {
     const md5 = crypto.createHash('md5');
     md5.update(password);
     const passwdCode = md5.digest('hex').substr(0, 16);
-
+    
     User.findOne({
       where: {
         email,
@@ -90,7 +112,7 @@ const SignInHandler = function signIn(req, res) {
 };
 
 
-router.get('/create_user', SignInHandler);
+router.get('/create_user', SignUpHandler);
 router.post('/create_user', SignUpHandler);
 
 router.get('/current_user', (req, res) => {
