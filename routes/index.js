@@ -9,7 +9,7 @@ const assetUrl = (name) => {
 
 const User = require('../model/user');
 const userLocation = require('../model/user_location');
-const Image = require('../model/Image');
+const Image = require('../model/image');
 
 User.hasOne(userLocation, { foreignKey: 'user_id' });
 User.hasOne(Image, { foreignKey: 'owner_id' });

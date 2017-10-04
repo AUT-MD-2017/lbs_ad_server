@@ -24,10 +24,7 @@ const Image = sequelize.define('image', {
     allowNull: false,
     primaryKey: true,
     unique: true,
-    // references: {
-    //     model: 'User',
-    //     key: 'id'
-    // }
+    autoIncrement: true,
   },
   owner_id: {
     type: Sequelize.BIGINT,
@@ -39,7 +36,7 @@ const Image = sequelize.define('image', {
   },
   urls: {
     type: Sequelize.TEXT,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   timestamps: false,

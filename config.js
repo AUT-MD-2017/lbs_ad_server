@@ -6,6 +6,7 @@ const cfg = {
   ip: '0.0.0.0',
   useFakeApi: false,
 
+  // the database config
   username: 'admin',
   password: 'admin',
   driver: 'mysql',
