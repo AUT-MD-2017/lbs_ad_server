@@ -61,14 +61,20 @@ const createLocation = (options) => {
   };
 };
 
-router.get('/current_user', (req, res) => {
-  res.jsonp(createUser());
-});
-
 router.get('/user/login', (req, res) => {
   res.jsonp({
     token: random.uuid(),
   });
+});
+
+router.get('/user/register', (req, res) => {
+  res.jsonp({
+    token: random.uuid(),
+  });
+});
+
+router.get('/user/current', (req, res) => {
+  res.jsonp(createUser());
 });
 
 router.get('/user/:id/bookmarks', (req, res) => {
