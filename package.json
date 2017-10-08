@@ -6,7 +6,7 @@
     "dev": "NODE_ENV=development webpack --watch --progress --colors",
     "dev-server": "NODE_ENV=development nodemon ./server.js",
     "prod": "NODE_ENV=production webpack --progress --colors",
-    "prod-server": "NODE_ENV=production pm2 start ./server.js -i max",
+    "prod-server": "npm run prod && NODE_ENV=production pm2 start ./server.js -i max -- --port=80",
     "lint": "eslint **/*.js",
     "upgrade:eslint": "make upgrade_eslint"
   },
